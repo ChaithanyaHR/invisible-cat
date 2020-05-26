@@ -64,14 +64,14 @@ const handleClick = (e) => {
 const successfulClick = () => {
   const cowDiv = document.createElement('div');
   const catImg = document.createElement('img');
-  catImg.src = 'cat.png';
+  catImg.src = './assets/cat.png';
   cowDiv.appendChild(catImg);
   cowArea.appendChild(cowDiv);
   alert('You won!!!');
 };
 
 const playSound = (volumeFactor) => {
-  var audio = new Audio('mew.wav');
+  var audio = new Audio('./assets/meow.wav');
   audio.volume = 1 - volumeFactor;
   audio.play();
 };
