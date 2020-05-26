@@ -1,5 +1,11 @@
 "use strict";
 
+const catPopup = document.getElementById('success-popup');
+const helpPopup = document.getElementById('help-popup');
+const catArea = document.getElementById('cat-area');
+const cancelButton = document.getElementById('cancel-btn');
+const restartButton = document.getElementById('restart-btn');
+
 let catPos = {
   x: 150,
   y: 150,
@@ -61,14 +67,11 @@ const handleClick = (e) => {
   }
 };
 
-let catArea = document.getElementById('cat-area');
-catArea.addEventListener('click', handleClick);
-
 window.onclick = function(event) {
-  const catPopup = document.getElementById('success-popup');
-  const helpPopup = document.getElementById('help-popup');
   if (event.target === catPopup || event.target === helpPopup) {
     event.target.style.display = 'none';
+  } else if (event.target === cancelButton) {
+    catPopup.style.display = 'none';
   }
 };
 
@@ -87,3 +90,16 @@ const openHelpPopup = () => {
   const helpPopup = document.getElementById('help-popup');
   helpPopup.style.display = 'block';
 }
+
+const restartGame = () => {
+  debugger;
+  const xFactor = Math.random();
+  const yFactor = Math.random();
+  const xPos = windowWidth*xFactor;
+  const yPos = headerHeight + (windowHeight-headerHeight)*yFactor;
+  catPos.x = xPos;
+  catPos.y = yPos;
+  catPopup.style.display = 'none';
+};
+
+catArea.addEventListener('click', handleClick);
