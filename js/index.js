@@ -65,14 +65,15 @@ let catArea = document.getElementById('cat-area');
 catArea.addEventListener('click', handleClick);
 
 window.onclick = function(event) {
-  const catPopup = document.getElementsByClassName('popup')[0];
-  if (event.target == catPopup) {
-    catPopup.style.display = 'none';
+  const catPopup = document.getElementById('success-popup');
+  const helpPopup = document.getElementById('help-popup');
+  if (event.target === catPopup || event.target === helpPopup) {
+    event.target.style.display = 'none';
   }
-}
+};
 
 const successfulClick = () => {
-  const catPopup = document.getElementsByClassName('popup')[0];
+  const catPopup = document.getElementById('success-popup');
   catPopup.style.display = 'block';
 };
 
@@ -81,3 +82,8 @@ const playSound = (volumeFactor) => {
   audio.volume = 1 - volumeFactor;
   audio.play();
 };
+
+const openHelpPopup = () => {
+  const helpPopup = document.getElementById('help-popup');
+  helpPopup.style.display = 'block';
+}

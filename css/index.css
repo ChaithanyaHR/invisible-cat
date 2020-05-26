@@ -4,26 +4,46 @@
 }
 
 body {
+  font-family: CatFont;
   background-image: url("../assets/background.jpg");
 }
 
 * {
-  font-family: CatFont;
   padding: 0;
   margin: 0;
 }
 
 .header {
   text-align: center;
+  vertical-align: middle;
+  background-color:  rgba(0,0,0, 0.7);
+}
+
+.help-btn {
+  margin-top: 25px;
+  margin-right: 10px;
+  float: right;
+  overflow: auto;
+  text-overflow: inherit;
+  white-space: nowrap;
+  font-weight: lighter;
+  padding: 10px;
+  color: white;
+}
+
+.help-btn:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 h1 {
+  display: inline-block;
+  width: 50%;
   overflow: auto;
   text-overflow: inherit;
   white-space: nowrap;
   font-weight: lighter;
   padding: 20px;
-  background-color:  rgba(0,0,0, 0.7);
   color: white;
 }
 
@@ -67,7 +87,7 @@ img {
   height: 100px;
 }
 
-button {
+.game-btn {
   min-width: 120px;
   display: block;
   font-size: 20px;
@@ -83,4 +103,11 @@ button {
 
 .cancel-btn {
   background-color: #f15e5e;
+}
+
+#help-popup .popup-content {
+  width: 400px;
+  letter-spacing: 1.5px;
+  word-spacing: 5px;
+  padding: 30px;
 }

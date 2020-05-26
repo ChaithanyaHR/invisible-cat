@@ -12,17 +12,29 @@
 
     <div class="header">
       <h1>Find the Invisible Cat!!</h1>
+      <div class="help-btn" onclick="openHelpPopup()">How to Play?</div>
     </div>
 
     <div id="cat-area">
     </div>
 
-    <div class="popup">
+    <div class="popup" id="success-popup">
       <div class="popup-content">
         <img src="assets/cat-icon.png" alt="cat">
         <div class="congrats-message">Meow! You found me!!!</div>
-        <button>Play again</button>
-        <button class="cancel-btn">Cancel</button>
+        <button class="game-btn">Play again</button>
+        <button class="game-btn cancel-btn">Cancel</button>
+      </div>
+    </div>
+
+    <div class="popup" id="help-popup">
+      <div class="popup-content">
+        Somewhere in this page is a hidden cat.
+        Keep clicking on various locations of the page until you find the cat.
+        <br />
+        <br />
+        Follow the meows to find out how far you are from the cat.
+        The louder, the closer!
       </div>
     </div>
 
