@@ -104,3 +104,7 @@ window.onclick = function(event) {
 
 restartGame();
 catArea.addEventListener('click', handleClick);
+
+// TODO: Difficulty level
+// TODO: Number of clicks
+// TODO: Show the cat in it's position -> with this difficulty level won't come into picture or the size of cat can determine difficulty level.
