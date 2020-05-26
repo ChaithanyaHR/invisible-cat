@@ -3,6 +3,10 @@
   src: url("../assets/cat-font.otf");
 }
 
+body {
+  background-image: url("../assets/background.jpg");
+}
+
 * {
   font-family: CatFont;
   padding: 0;
@@ -19,11 +23,11 @@ h1 {
   white-space: nowrap;
   font-weight: lighter;
   padding: 20px;
-  background-color: #c6b7e8;
+  background-color:  rgba(0,0,0, 0.7);
+  color: white;
 }
 
 #cat-area {
-  background-image: url("../assets/background.jpg");
   position: fixed;
   display: block;
   height: 100%;
