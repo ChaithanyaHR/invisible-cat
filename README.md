@@ -1,2 +1,2 @@
-# invisible-cow
-Find the invisible cow
+# invisible-cat
+Find the invisible cat

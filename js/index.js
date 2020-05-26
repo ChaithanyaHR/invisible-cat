@@ -1,6 +1,6 @@
 "use strict";
 
-let cowPos = {
+let catPos = {
   x: 150,
   y: 150,
 };
@@ -36,10 +36,10 @@ const calculateDistance = (pt1, pt2) => {
 }
 
 const findMaxDistance = () => {
-  const leftTopDistance = calculateDistance(leftTop, cowPos);
-  const rightTopDistance = calculateDistance(rightTop, cowPos);
-  const leftBottomDistance = calculateDistance(leftBottom, cowPos);
-  const rightBottomDistance = calculateDistance(rightBottom, cowPos);
+  const leftTopDistance = calculateDistance(leftTop, catPos);
+  const rightTopDistance = calculateDistance(rightTop, catPos);
+  const leftBottomDistance = calculateDistance(leftBottom, catPos);
+  const rightBottomDistance = calculateDistance(rightBottom, catPos);
   return Math.max(leftTopDistance, rightTopDistance, leftBottomDistance, rightBottomDistance);
 }
 
@@ -50,24 +50,30 @@ const handleClick = (e) => {
     x: e.clientX,
     y: e.clientY,
   };
-  if ( isBetween(mousePos.x, cowPos.x - 50, cowPos.x + 50) &&
-    isBetween(mousePos.y, cowPos.y - 50, cowPos.y + 50)
+  if ( isBetween(mousePos.x, catPos.x - 50, catPos.x + 50) &&
+    isBetween(mousePos.y, catPos.y - 50, catPos.y + 50)
   ) {
     successfulClick();
   } else {
-    let distance = calculateDistance(mousePos, cowPos);
+    let distance = calculateDistance(mousePos, catPos);
     let volumeFactor = distance/maxDistance;
     playSound(volumeFactor);
   }
 };
 
+let catArea = document.getElementById('cat-area');
+catArea.addEventListener('click', handleClick);
+
+window.onclick = function(event) {
+  const catPopup = document.getElementsByClassName('popup')[0];
+  if (event.target == catPopup) {
+    catPopup.style.display = 'none';
+  }
+}
+
 const successfulClick = () => {
-  const cowDiv = document.createElement('div');
-  const catImg = document.createElement('img');
-  catImg.src = './assets/cat.png';
-  cowDiv.appendChild(catImg);
-  cowArea.appendChild(cowDiv);
-  alert('You won!!!');
+  const catPopup = document.getElementsByClassName('popup')[0];
+  catPopup.style.display = 'block';
 };
 
 const playSound = (volumeFactor) => {
@@ -75,6 +81,3 @@ const playSound = (volumeFactor) => {
   audio.volume = 1 - volumeFactor;
   audio.play();
 };
-
-let cowArea = document.getElementById('cow-area');
-cowArea.addEventListener('click', handleClick);
