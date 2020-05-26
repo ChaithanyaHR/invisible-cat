@@ -6,10 +6,8 @@ const catArea = document.getElementById('cat-area');
 const cancelButton = document.getElementById('cancel-btn');
 const restartButton = document.getElementById('restart-btn');
 
-let catPos = {
-  x: 150,
-  y: 150,
-};
+let catPos = {};
+let maxDistance;
 
 const windowWidth = window.innerWidth;
 const windowHeight = window.innerHeight;
@@ -49,29 +47,23 @@ const findMaxDistance = () => {
   return Math.max(leftTopDistance, rightTopDistance, leftBottomDistance, rightBottomDistance);
 }
 
-const maxDistance = findMaxDistance();
-
 const handleClick = (e) => {
   const mousePos = {
     x: e.clientX,
     y: e.clientY,
   };
-  if ( isBetween(mousePos.x, catPos.x - 50, catPos.x + 50) &&
-    isBetween(mousePos.y, catPos.y - 50, catPos.y + 50)
+  const minX = (catPos.x - 100) >=0 ? ((catPos.x - 100)) : 0;
+  const maxX = (catPos.x + 100) <= windowWidth ? (catPos.x + 100) : windowWidth;
+  const minY = (catPos.y - 100) >=0 ? ((catPos.y - 100)) : 0;
+  const maxY = (catPos.y + 100) <= windowHeight ? (catPos.y + 100) : windowHeight;
+  if ( isBetween(mousePos.x, minX, maxX) &&
+    isBetween(mousePos.y, minY, maxY)
   ) {
     successfulClick();
   } else {
     let distance = calculateDistance(mousePos, catPos);
     let volumeFactor = distance/maxDistance;
     playSound(volumeFactor);
-  }
-};
-
-window.onclick = function(event) {
-  if (event.target === catPopup || event.target === helpPopup) {
-    event.target.style.display = 'none';
-  } else if (event.target === cancelButton) {
-    catPopup.style.display = 'none';
   }
 };
 
@@ -92,7 +84,6 @@ const openHelpPopup = () => {
 }
 
 const restartGame = () => {
-  debugger;
   const xFactor = Math.random();
   const yFactor = Math.random();
   const xPos = windowWidth*xFactor;
@@ -100,6 +91,16 @@ const restartGame = () => {
   catPos.x = xPos;
   catPos.y = yPos;
   catPopup.style.display = 'none';
+  maxDistance = findMaxDistance();
 };
 
+window.onclick = function(event) {
+  if (event.target === catPopup || event.target === helpPopup) {
+    event.target.style.display = 'none';
+  } else if (event.target === cancelButton) {
+    catPopup.style.display = 'none';
+  }
+};
+
+restartGame();
 catArea.addEventListener('click', handleClick);
