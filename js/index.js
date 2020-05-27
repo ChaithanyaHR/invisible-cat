@@ -5,13 +5,17 @@ const helpPopup = document.getElementById('help-popup');
 const catArea = document.getElementById('cat-area');
 const cancelButton = document.getElementById('cancel-btn');
 const restartButton = document.getElementById('restart-btn');
+const clickCount = document.getElementById('click-count');
+const catPeek = document.getElementById('cat-peek');
+const catSize = catPeek.height;
 
 let catPos = {};
 let maxDistance;
+let numberOfClicks = 0;
 
 const windowWidth = window.innerWidth;
 const windowHeight = window.innerHeight;
-const headerHeight = document.getElementsByClassName('header')[0].style.height;
+const headerHeight = document.getElementsByClassName('header')[0].offsetHeight;
 
 const leftTop = {
   x: 0,
@@ -47,29 +51,11 @@ const findMaxDistance = () => {
   return Math.max(leftTopDistance, rightTopDistance, leftBottomDistance, rightBottomDistance);
 }
 
-const handleClick = (e) => {
-  const mousePos = {
-    x: e.clientX,
-    y: e.clientY,
-  };
-  const minX = (catPos.x - 100) >=0 ? ((catPos.x - 100)) : 0;
-  const maxX = (catPos.x + 100) <= windowWidth ? (catPos.x + 100) : windowWidth;
-  const minY = (catPos.y - 100) >=0 ? ((catPos.y - 100)) : 0;
-  const maxY = (catPos.y + 100) <= windowHeight ? (catPos.y + 100) : windowHeight;
-  if ( isBetween(mousePos.x, minX, maxX) &&
-    isBetween(mousePos.y, minY, maxY)
-  ) {
-    successfulClick();
-  } else {
-    let distance = calculateDistance(mousePos, catPos);
-    let volumeFactor = distance/maxDistance;
-    playSound(volumeFactor);
-  }
-};
-
 const successfulClick = () => {
   const catPopup = document.getElementById('success-popup');
   catPopup.style.display = 'block';
+  catPeek.style.display = 'block';
+  clickCount.textContent = numberOfClicks;
 };
 
 const playSound = (volumeFactor) => {
@@ -83,15 +69,19 @@ const openHelpPopup = () => {
   helpPopup.style.display = 'block';
 }
 
-const restartGame = () => {
+const startGame = () => {
+  numberOfClicks = 0;
   const xFactor = Math.random();
   const yFactor = Math.random();
-  const xPos = windowWidth*xFactor;
-  const yPos = headerHeight + (windowHeight-headerHeight)*yFactor;
+  const xPos = (windowWidth - catSize)*xFactor;
+  const yPos = (windowHeight-headerHeight-catSize)*yFactor;
   catPos.x = xPos;
   catPos.y = yPos;
   catPopup.style.display = 'none';
   maxDistance = findMaxDistance();
+  catPeek.style.left = `${catPos.x}px`;
+  catPeek.style.top = `${catPos.y}px`;
+  catPeek.style.display = 'none';
 };
 
 window.onclick = function(event) {
@@ -99,12 +89,23 @@ window.onclick = function(event) {
     event.target.style.display = 'none';
   } else if (event.target === cancelButton) {
     catPopup.style.display = 'none';
+  } else if (event.target === catPeek) {
+    numberOfClicks = numberOfClicks + 1;
+    successfulClick();
+  } else if (event.target === catArea) {
+    numberOfClicks = numberOfClicks + 1;
+    const mousePos = {
+      x: event.clientX,
+      y: event.clientY,
+    };
+    let distance = calculateDistance(mousePos, catPos);
+    let volumeFactor = distance/maxDistance;
+    playSound(volumeFactor);
   }
 };
 
-restartGame();
-catArea.addEventListener('click', handleClick);
+startGame();
 
 // TODO: Difficulty level
-// TODO: Number of clicks
-// TODO: Show the cat in it's position -> with this difficulty level won't come into picture or the size of cat can determine difficulty level.
+// TODO: max number of clicks
+// TODO: with this difficulty level won't come into picture or the size of cat can determine difficulty level.

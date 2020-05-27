@@ -71,7 +71,7 @@ h1 {
   top: -50px;
 }
 
-img {
+#success-cat {
   position: relative;
   top: -50px;
   width: 100px;
@@ -101,4 +101,12 @@ img {
   letter-spacing: 1.5px;
   word-spacing: 5px;
   padding: 30px;
+}
+
+#cat-peek {
+  position: relative;
+  display: none;
+  height: 200px;
+  width: 200px;
+  cursor: pointer;
 }

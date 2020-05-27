@@ -16,13 +16,14 @@
     </div>
 
     <div id="cat-area">
+      <img id="cat-peek" src='cat-peek.gif'>
     </div>
 
     <div class="popup" id="success-popup">
       <div class="popup-content">
-        <img src="assets/cat-icon.png" alt="cat">
-        <div id="congrats-message">Meow! You found me!!!</div>
-        <button class="game-btn" id="restart-btn" onclick="restartGame()">Play again</button>
+        <img src="assets/cat-icon.png" alt="cat" id="success-cat">
+        <div id="congrats-message">Meow! You found me in <span id="click-count"></span> clicks!!!</div>
+        <button class="game-btn" id="restart-btn" onclick="startGame()">Play again</button>
         <button class="game-btn" id="cancel-btn">Cancel</button>
       </div>
     </div>
