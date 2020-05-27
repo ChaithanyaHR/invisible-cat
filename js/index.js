@@ -1,13 +1,31 @@
 "use strict";
 
+const CAT_SIZES = {
+  DEFAULT: 300,
+  SMALL: 200,
+  LARGE: 400,
+};
+
+const MAX_CLICKS = {
+  DEFAULT: 50,
+  EASY: 100,
+  DIFFICULT: 30,
+};
+
 const catPopup = document.getElementById('success-popup');
 const helpPopup = document.getElementById('help-popup');
 const catArea = document.getElementById('cat-area');
+const helpButton = document.getElementById('help-btn');
+const difficultySlider = document.getElementById('difficulty-slider');
 const cancelButton = document.getElementById('cancel-btn');
 const restartButton = document.getElementById('restart-btn');
 const clickCount = document.getElementById('click-count');
 const catPeek = document.getElementById('cat-peek');
-const catSize = catPeek.height;
+const settingsButton = document.getElementById('settings-btn');
+const settingsDropdown = document.getElementById('settings-dropdown');
+const difficultyValue = document.getElementById('difficulty-value');
+let catSize = CAT_SIZES.DEFAULT;
+let maxNumberOfClicks = MAX_CLICKS.DEFAULT;
 
 let catPos = {};
 let maxDistance;
@@ -64,11 +82,6 @@ const playSound = (volumeFactor) => {
   audio.play();
 };
 
-const openHelpPopup = () => {
-  const helpPopup = document.getElementById('help-popup');
-  helpPopup.style.display = 'block';
-}
-
 const startGame = () => {
   numberOfClicks = 0;
   const xFactor = Math.random();
@@ -84,28 +97,131 @@ const startGame = () => {
   catPeek.style.display = 'none';
 };
 
-window.onclick = function(event) {
-  if (event.target === catPopup || event.target === helpPopup) {
-    event.target.style.display = 'none';
-  } else if (event.target === cancelButton) {
-    catPopup.style.display = 'none';
-  } else if (event.target === catPeek) {
-    numberOfClicks = numberOfClicks + 1;
-    successfulClick();
-  } else if (event.target === catArea) {
-    numberOfClicks = numberOfClicks + 1;
-    const mousePos = {
-      x: event.clientX,
-      y: event.clientY,
-    };
-    let distance = calculateDistance(mousePos, catPos);
-    let volumeFactor = distance/maxDistance;
-    playSound(volumeFactor);
+const setDifficultyValue = (difficulty) => {
+  switch(difficulty) {
+    case "1": {
+      return 'Low'
+    }
+    case "51": {
+      return 'Medium';
+    }
+    case "101": {
+      return 'High';
+    }
+    default: {
+      return 'Medium';
+    }
+  };
+}
+
+const setCatSize = (difficulty) => {
+  switch (difficulty) {
+    case "1": {
+      return CAT_SIZES.SMALL;
+    }
+    case "51": {
+      return CAT_SIZES.DEFAULT;
+    }
+    case "101": {
+      return CAT_SIZES.LARGE;
+    }
+    default: {
+      return CAT_SIZES.DEFAULT;
+    }
+  };
+};
+
+const setMaxClicks = (difficulty) => {
+  switch (difficulty) {
+    case "1": {
+      return MAX_CLICKS.EASY;
+    }
+    case "51": {
+      return MAX_CLICKS.DEFAULT;
+    }
+    case "101": {
+      return MAX_CLICKS.DIFFICULT;
+    }
+    default: {
+      return MAX_CLICKS.DEFAULT;
+    }
+  };
+}
+
+const hasFoundCat = (mousePos) => {
+  if (
+    isBetween(mousePos.x, catPos.x, catPos.x + catSize) &&
+    isBetween(mousePos.y, catPos.y, catPos.y + catSize)
+  ) {
+    return true;
   }
+  return false;
+}
+
+window.onclick = function(event) {
+  switch (event.target) {
+    case restartButton: {
+      startGame();
+      break;
+    }
+    case cancelButton: {
+      catPopup.style.display = 'none';
+      catPeek.style.display = 'none';
+      break;
+    }
+    case helpPopup: {
+      helpPopup.style.display = 'none';
+      break;
+    }
+    case catPopup: {
+      catPopup.style.display = 'none';
+      break;
+    }
+    case helpButton: {
+      helpPopup.style.display = 'block';
+      settingsDropdown.style.display = 'none';
+      break;
+    }
+    case difficultySlider: {
+      let difficulty = event.target.value;
+      difficultyValue.textContent = setDifficultyValue(difficulty);
+      catSize = setCatSize(difficulty);
+      maxNumberOfClicks = setMaxClicks(difficulty);
+      startGame();
+      break;
+    }
+    case settingsButton: {
+      if (settingsDropdown.style.display === 'block') {
+        settingsDropdown.style.display = 'none';
+      } else {
+        settingsDropdown.style.display = 'block';
+      }
+      break;
+    }
+    case catArea: {
+      numberOfClicks = numberOfClicks + 1;
+      const mousePos = {
+        x: event.clientX,
+        y: event.clientY,
+      };
+      if (hasFoundCat(mousePos)) {
+        successfulClick();
+      }
+      else if (numberOfClicks > maxNumberOfClicks) {
+        alert("You lost :(");
+        catPeek.style.display = 'block';
+        setTimeout(startGame(), 10000);
+      }
+      else {
+        let distance = calculateDistance(mousePos, catPos);
+        let volumeFactor = (distance**2)/(maxDistance**2);
+        playSound(volumeFactor);
+      }
+      break;
+    }
+  };
 };
 
 startGame();
 
-// TODO: Difficulty level
-// TODO: max number of clicks
-// TODO: with this difficulty level won't come into picture or the size of cat can determine difficulty level.
+// TODO: The size of cat  and max no of clicks can determine difficulty level.
