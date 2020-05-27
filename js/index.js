@@ -13,12 +13,15 @@ const MAX_CLICKS = {
 };
 
 const catPopup = document.getElementById('success-popup');
+const failedPopup = document.getElementById('failure-popup');
 const helpPopup = document.getElementById('help-popup');
 const catArea = document.getElementById('cat-area');
 const helpButton = document.getElementById('help-btn');
 const difficultySlider = document.getElementById('difficulty-slider');
-const cancelButton = document.getElementById('cancel-btn');
-const restartButton = document.getElementById('restart-btn');
+const cancelButton1 = document.getElementById('cancel-btn-1');
+const restartButton1 = document.getElementById('restart-btn-1');
+const cancelButton2 = document.getElementById('cancel-btn-2');
+const restartButton2 = document.getElementById('restart-btn-2');
 const clickCount = document.getElementById('click-count');
 const catPeek = document.getElementById('cat-peek');
 const settingsButton = document.getElementById('settings-btn');
@@ -83,6 +86,8 @@ const playSound = (volumeFactor) => {
 };
 
 const startGame = () => {
+  helpPopup.style.display = 'none';
+  failedPopup.style.display = 'none';
   numberOfClicks = 0;
   const xFactor = Math.random();
   const yFactor = Math.random();
@@ -160,11 +165,13 @@ const hasFoundCat = (mousePos) => {
 
 window.onclick = function(event) {
   switch (event.target) {
-    case restartButton: {
+    case restartButton1:
+    case restartButton2: {
       startGame();
       break;
     }
-    case cancelButton: {
+    case cancelButton1:
+    case cancelButton2: {
       catPopup.style.display = 'none';
       catPeek.style.display = 'none';
       break;
@@ -175,6 +182,12 @@ window.onclick = function(event) {
     }
     case catPopup: {
       catPopup.style.display = 'none';
+      startGame();
+      break;
+    }
+    case failedPopup: {
+      failedPopup.style.display = 'none';
+      startGame();
       break;
     }
     case helpButton: {
@@ -208,9 +221,8 @@ window.onclick = function(event) {
         successfulClick();
       }
       else if (numberOfClicks > maxNumberOfClicks) {
-        alert("You lost :(");
+        failedPopup.style.display = 'block';
         catPeek.style.display = 'block';
-        setTimeout(startGame(), 10000);
       }
       else {
         let distance = calculateDistance(mousePos, catPos);
@@ -223,5 +235,3 @@ window.onclick = function(event) {
 };
 
 startGame();
-
-// TODO: The size of cat  and max no of clicks can determine difficulty level.
