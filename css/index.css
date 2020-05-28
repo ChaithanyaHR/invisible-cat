@@ -112,6 +112,13 @@ h1 {
   width: 100%;
 }
 
+#screen-message {
+  display: none;
+  background-color: #76323F;
+  padding: 20px;
+  text-align: center;
+}
+
 .popup-cat {
   width: 100px;
   height: 100px;
@@ -151,7 +158,11 @@ h1 {
   width: 200px;
 }
 
-@media only screen and (max-width: 1240px) {
+@media only screen and (min-width: 1008px) and (max-width: 1140px) {
+  #difficulty-slider {
+    width: 90px;
+  }
+
   #help-btn {
     font-size: 0;
   }
@@ -166,3 +177,15 @@ h1 {
     font-weight: 900;
   }
 }
+
+@media only screen and (max-width: 1008px) {
+  .header {
+    display: none;
+  }
+
+  #screen-message {
+    display: block;
+  }
+}
+
+
