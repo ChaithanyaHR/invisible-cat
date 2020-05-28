@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
     <link href="css/index.css" rel="stylesheet">
     <title>Invisible Cat</title>
   </head>
@@ -12,41 +12,45 @@
   <body>
 
     <div class="header">
+
       <h1>Find the Invisible Cat!!</h1>
-      <div id="settings-div">
-        <i class="fa fa-bars fa-lg" id="settings-btn"></i>
+
+      <button class="game-btn" id="start-button">Start</button>
+
+      <div id="difficulty-label">
+        <label>
+          Difficulty:
+          <input
+            type="range"
+            min="1"
+            max="101"
+            value="50"
+            step="50"
+            class="slider"
+            id="difficulty-slider"
+          >
+        </label>
       </div>
-      <div id="settings-dropdown">
-        <div id="help-btn">How to Play?</div>
-        <div id="difficulty-label">
-          <label>
-            Difficulty: <span id="difficulty-value">Medium</span>
-            <input type="range" min="1" max="101" value="50" step="50" class="slider" id="difficulty-slider">
-          </label>
-        </div>
+
+      <div id="clicks-div">
+        Number of clicks: <span id="curr-click-count"></span>/<span id="total-click-count"></span>
       </div>
-      </div>
+
+      <div id="help-btn">How to Play?</div>
+
     </div>
 
     <div id="cat-area">
       <img id="cat-peek" src='assets/cat-peek.gif'>
     </div>
 
-    <div class="popup" id="success-popup">
+    <div class="popup" id="game-over-popup">
       <div class="popup-content">
-        <img src="assets/cat-icon.png" alt="cat" class="success-cat">
-        <div id="congrats-message">Meow! You found me in <span id="click-count"></span> clicks!!!</div>
-        <button class="game-btn" id="restart-btn-1">Play again</button>
-        <button class="game-btn" id="cancel-btn-1">Cancel</button>
-      </div>
-    </div>
-
-    <div class="popup" id="failure-popup">
-      <div class="popup-content">
-        <img src="assets/cat-icon.png" alt="cat" class="success-cat">
-        <div id="failure-message">Oops! You failed..</div>
-        <button class="game-btn" id="restart-btn-2">Play again</button>
-        <button class="game-btn" id="cancel-btn-2">Cancel</button>
+        <img src="assets/cat-icon.png" alt="cat" class="popup-cat">
+        <div class="popup-message" id="success-message">Meow! You found me in <span id="click-count"></span> clicks!!!</div>
+        <div class="popup-message" id="failure-message">Oops! You failed..</div>
+        <button class="game-btn" id="restart-btn">Play again</button>
+        <button class="game-btn" id="cancel-btn">Cancel</button>
       </div>
     </div>
 

@@ -1,3 +1,5 @@
+/* Body styles */
+
 @font-face {
   font-family: catFont;
   src: url("../assets/cat-font.otf");
@@ -5,93 +7,15 @@
 
 body {
   font-family: CatFont;
+  color: white;
+  letter-spacing: 2px;
   background-image: url("../assets/background.jpg");
 }
 
+/* This is to remove the space between html and body */
 * {
   padding: 0;
   margin: 0;
-}
-
-.header {
-  padding: 20px;
-  padding-left: 30px;
-  padding-right: 30px;
-  vertical-align: middle;
-  background-color: #76323F;
-  opacity: 1;
-  overflow: auto;
-  text-overflow: inherit;
-  white-space: nowrap;
-  color: white;
-  letter-spacing: 2px;
-}
-
-#settings-div {
-  padding-top: 8px;
-  float: right;
-}
-
-#settings-dropdown {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  border-radius: 5px;
-  z-index: 2;
-  position: absolute;
-  right: 0;
-  width: 322px;
-  text-align: center;
-  display: none;
-  margin-right: 20px;
-  background-color: white;
-  color: black;
-  border-collapse: collapse;
-}
-
-#help-btn {
-  padding: 10px;
-  padding-bottom: 5px;
-}
-
-#help-btn:hover {
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-#difficulty-label {
-  padding: 10px;
-  padding-top: 5px;
-}
-
-#difficulty-slider {
-  height: 10px;
-  -webkit-appearance: none;
-  border-radius: 10px;
-  outline: none;
-  margin-top: 5px;
-  float: right;
-  background-color: rgba(0,0,0, 0.2);
-}
-
-#difficulty-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 20px;
-  height: 20px;
-  border-radius: 10px;
-  background-color: #e24e42;
-  border: 1px solid black;
-}
-
-h1 {
-  display: inline-block;
-  width: fit-content;
-  font-size: 24px;
-}
-
-#cat-area {
-  position: fixed;
-  display: block;
-  height: 100%;
-  width: 100%;
 }
 
 .popup {
@@ -102,54 +26,120 @@ h1 {
   width: 100%;
   height: 100%;
   background-color: rgba(0,0,0, 0.5);
+  color: black;
 }
 
 .popup-content {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-radius: 5px;
+  padding: 20px;
   margin: auto;
-  width: 500px;
+  margin-top: 8%;
+  width: 30%;
   background-color: white;
-  margin-top: 100px;
-  padding-bottom: 10px;
-}
-
-#congrats-message, #failure-message {
   font-size: 25px;
-  position: relative;
-  top: -50px;
 }
 
-.success-cat {
-  position: relative;
-  top: -50px;
+.popup-message {
+  margin: 10px;
+}
+
+/* Header styles */
+
+.header {
+  padding: 30px;
+  background-color: #76323F;
+}
+
+h1 {
+  display: inline-block;
+  width: 30%;
+  font-size: 24px;
+}
+
+#start-button {
+  display: inline-block;
+  margin: 0;
+}
+
+#difficulty-label {
+  padding-left: 30px;
+  padding-right: 15px;
+  display: inline-block;
+}
+
+#difficulty-slider {
+  height: 10px;
+  -webkit-appearance: none;
+  border-radius: 12px;
+  outline: none;
+  background-color:white;
+}
+
+#difficulty-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  background-color: #28b351;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#clicks-div {
+  padding-left: 20px;
+  display: none;
+  border-left: 2px solid white;
+}
+
+#help-btn {
+  padding-top: 8px;
+  float: right;
+}
+
+#help-btn:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+
+/* Cat Area */
+
+/* This is to ensure the cat-area fills up the remaining space even without any content */
+#cat-area {
+  position: fixed;
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.popup-cat {
   width: 100px;
   height: 100px;
 }
 
+#success-message, #failure-message {
+  display: none;
+}
+
 .game-btn {
   min-width: 120px;
-  display: block;
   font-size: 20px;
   border-radius: 5px;
-  position: relative;
-  top: -20px;
-  margin: auto;
   margin-bottom: 20px;
   padding: 10px;
   background-color: #28b351;
   border: none;
-  color: white
+  color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-#cancel-btn-1, #cancel-btn-2 {
+#cancel-btn {
   background-color: #f15e5e;
 }
 
 #help-popup .popup-content {
+  font-size: 20px;
   background-color: #caebf2;
-  width: 400px;
-  letter-spacing: 1.5px;
   word-spacing: 5px;
   padding: 30px;
 }
@@ -159,5 +149,20 @@ h1 {
   display: none;
   height: 200px;
   width: 200px;
-  cursor: pointer;
+}
+
+@media only screen and (max-width: 1240px) {
+  #help-btn {
+    font-size: 0;
+  }
+
+  #help-btn::before {
+    float: right;
+    position: relative;
+    top: 5px;
+    font-size: 16px;
+    font-family: "Font Awesome 5 Free";
+    content: "\f059";
+    font-weight: 900;
+  }
 }

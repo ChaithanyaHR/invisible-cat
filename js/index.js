@@ -1,59 +1,54 @@
 "use strict";
 
-const CAT_SIZES = {
-  DEFAULT: 300,
-  SMALL: 200,
-  LARGE: 400,
+// Constants
+const LEVELS = {
+  EASY: {
+    catSize: 400,
+    maxClicks: 100,
+  },
+  MEDIUM: {
+    catSize: 300,
+    maxClicks: 50,
+  },
+  DIFFICULT: {
+    catSize: 200,
+    maxClicks: 30,
+  },
+}
+
+const DIFF_VALUE_TO_LEVEL = {
+  '1': LEVELS.EASY,
+  '51': LEVELS.MEDIUM,
+  '101': LEVELS.DIFFICULT,
 };
 
-const MAX_CLICKS = {
-  DEFAULT: 50,
-  EASY: 100,
-  DIFFICULT: 30,
-};
-
-const catPopup = document.getElementById('success-popup');
-const failedPopup = document.getElementById('failure-popup');
-const helpPopup = document.getElementById('help-popup');
-const catArea = document.getElementById('cat-area');
-const helpButton = document.getElementById('help-btn');
+// Elements
+// Header elements
+const startButton = document.getElementById('start-button');
 const difficultySlider = document.getElementById('difficulty-slider');
-const cancelButton1 = document.getElementById('cancel-btn-1');
-const restartButton1 = document.getElementById('restart-btn-1');
-const cancelButton2 = document.getElementById('cancel-btn-2');
-const restartButton2 = document.getElementById('restart-btn-2');
-const clickCount = document.getElementById('click-count');
+const clicksDiv = document.getElementById('clicks-div');
+const currClickCount = document.getElementById('curr-click-count');
+const totalClickCount = document.getElementById('total-click-count');
+const helpButton = document.getElementById('help-btn');
+const helpPopup = document.getElementById('help-popup');
+// Cat Area elements
+const catArea = document.getElementById('cat-area');
 const catPeek = document.getElementById('cat-peek');
-const settingsButton = document.getElementById('settings-btn');
-const settingsDropdown = document.getElementById('settings-dropdown');
-const difficultyValue = document.getElementById('difficulty-value');
-let catSize = CAT_SIZES.DEFAULT;
-let maxNumberOfClicks = MAX_CLICKS.DEFAULT;
+// Game Over Popup
+const gameOverPopup = document.getElementById('game-over-popup');
+const successMessage = document.getElementById('success-message');
+const clickCount = document.getElementById('click-count');
+const failureMessage = document.getElementById('failure-message');
+const restartButton = document.getElementById('restart-btn');
+const cancelButton = document.getElementById('cancel-btn');
 
-let catPos = {};
-let maxDistance;
-let numberOfClicks = 0;
+// Game state variables
+let catSize, maxClicks, catPos, maxDistance, difficultyLevel = LEVELS.MEDIUM, numberOfClicks = 0, isGameInProgress = false;
 
-const windowWidth = window.innerWidth;
-const windowHeight = window.innerHeight;
-const headerHeight = document.getElementsByClassName('header')[0].offsetHeight;
+// Window variables
+let windowWidth, windowHeight, headerHeight, leftTop, rightTop, leftBottom, rightBottom;
 
-const leftTop = {
-  x: 0,
-  y: headerHeight,
-};
-const rightTop = {
-  x: windowWidth,
-  y: headerHeight,
-};
-const leftBottom = {
-  x: 0,
-  y: windowHeight,
-};
-const rightBottom = {
-  x: windowWidth,
-  y: windowHeight,
-};
+// Utility functions
 
 const isBetween = ( num, min, max ) => {
   return (num >= min && num <= max);
@@ -72,86 +67,58 @@ const findMaxDistance = () => {
   return Math.max(leftTopDistance, rightTopDistance, leftBottomDistance, rightBottomDistance);
 }
 
-const successfulClick = () => {
-  const catPopup = document.getElementById('success-popup');
-  catPopup.style.display = 'block';
-  catPeek.style.display = 'block';
-  clickCount.textContent = numberOfClicks;
-};
+// Game functions
 
-const playSound = (volumeFactor) => {
-  var audio = new Audio('./assets/meow.wav');
-  audio.volume = 1 - volumeFactor;
-  audio.play();
-};
+const setWindowProperties = () => {
+  windowWidth = window.innerWidth;
+  windowHeight = window.innerHeight;
+  headerHeight = document.getElementsByClassName('header')[0].offsetHeight;
+  leftTop = {
+    x: 0,
+    y: headerHeight,
+  };
+  rightTop = {
+    x: windowWidth,
+    y: headerHeight,
+  };
+  leftBottom = {
+    x: 0,
+    y: windowHeight,
+  };
+  rightBottom = {
+    x: windowWidth,
+    y: windowHeight,
+  };
+}
+
 
 const startGame = () => {
+  setWindowProperties();
+  isGameInProgress = true;
+  clicksDiv.style.display = 'inline-block';
+  // Close all pop-ups
+  gameOverPopup.style.display = 'none';
   helpPopup.style.display = 'none';
-  failedPopup.style.display = 'none';
-  numberOfClicks = 0;
+  // Set Game Parameters
+  catSize = difficultyLevel.catSize;
+  maxClicks = difficultyLevel.maxClicks;
+  // Set random cat position
   const xFactor = Math.random();
   const yFactor = Math.random();
   const xPos = (windowWidth - catSize)*xFactor;
   const yPos = (windowHeight-headerHeight-catSize)*yFactor;
-  catPos.x = xPos;
-  catPos.y = yPos;
-  catPopup.style.display = 'none';
-  maxDistance = findMaxDistance();
+  catPos = {
+    x: xPos,
+    y: yPos,
+  };
   catPeek.style.left = `${catPos.x}px`;
   catPeek.style.top = `${catPos.y}px`;
-  catPeek.style.display = 'none';
+  catPeek.style.display = 'none'; // Hide the cat
+  maxDistance = findMaxDistance(); // Find the new maxDistance
+  numberOfClicks = 0;
+  totalClickCount.textContent = maxClicks;
+  currClickCount.textContent = 0;
 };
-
-const setDifficultyValue = (difficulty) => {
-  switch(difficulty) {
-    case "1": {
-      return 'Low'
-    }
-    case "51": {
-      return 'Medium';
-    }
-    case "101": {
-      return 'High';
-    }
-    default: {
-      return 'Medium';
-    }
-  };
-}
-
-const setCatSize = (difficulty) => {
-  switch (difficulty) {
-    case "1": {
-      return CAT_SIZES.SMALL;
-    }
-    case "51": {
-      return CAT_SIZES.DEFAULT;
-    }
-    case "101": {
-      return CAT_SIZES.LARGE;
-    }
-    default: {
-      return CAT_SIZES.DEFAULT;
-    }
-  };
-};
-
-const setMaxClicks = (difficulty) => {
-  switch (difficulty) {
-    case "1": {
-      return MAX_CLICKS.EASY;
-    }
-    case "51": {
-      return MAX_CLICKS.DEFAULT;
-    }
-    case "101": {
-      return MAX_CLICKS.DIFFICULT;
-    }
-    default: {
-      return MAX_CLICKS.DEFAULT;
-    }
-  };
-}
 
 const hasFoundCat = (mousePos) => {
   if (
@@ -163,75 +130,96 @@ const hasFoundCat = (mousePos) => {
   return false;
 }
 
+const playSound = (volumeFactor) => {
+  var audio = new Audio('./assets/meow.wav');
+  audio.volume = 1 - volumeFactor;
+  audio.play();
+};
+
+const successfulClick = () => {
+  // Display the hidden cat
+  catPeek.style.display = 'block';
+  // Set clickCount and display success popup
+  clickCount.textContent = numberOfClicks;
+  gameOverPopup.style.display = 'block';
+  successMessage.style.display = 'block';
+  failureMessage.style.display = 'none';
+};
+
+const cancelGame = () => {
+  // Close all popups
+  gameOverPopup.style.display = 'none';
+  catPeek.style.display = 'none'; // Hide the cat
+  isGameInProgress = false;
+  clicksDiv.style.display = 'none';
+  // Reset click counts
+  totalClickCount.textContent = 0;
+  currClickCount.textContent = 0;
+}
+
+// Handle onClick events
+
 window.onclick = function(event) {
   switch (event.target) {
-    case restartButton1:
-    case restartButton2: {
+    case startButton:
+    case restartButton: {
       startGame();
       break;
     }
-    case cancelButton1:
-    case cancelButton2: {
-      catPopup.style.display = 'none';
-      catPeek.style.display = 'none';
+    case cancelButton: {
+      cancelGame();
       break;
     }
     case helpPopup: {
       helpPopup.style.display = 'none';
       break;
     }
-    case catPopup: {
-      catPopup.style.display = 'none';
-      startGame();
-      break;
-    }
-    case failedPopup: {
-      failedPopup.style.display = 'none';
-      startGame();
+    case gameOverPopup: {
+      gameOverPopup.style.display = 'none';
+      cancelGame();
       break;
     }
     case helpButton: {
       helpPopup.style.display = 'block';
-      settingsDropdown.style.display = 'none';
       break;
     }
     case difficultySlider: {
-      let difficulty = event.target.value;
-      difficultyValue.textContent = setDifficultyValue(difficulty);
-      catSize = setCatSize(difficulty);
-      maxNumberOfClicks = setMaxClicks(difficulty);
-      startGame();
-      break;
-    }
-    case settingsButton: {
-      if (settingsDropdown.style.display === 'block') {
-        settingsDropdown.style.display = 'none';
-      } else {
-        settingsDropdown.style.display = 'block';
+      difficultyLevel = DIFF_VALUE_TO_LEVEL[event.target.value];
+      if (isGameInProgress) {
+        startGame();
       }
       break;
     }
     case catArea: {
-      numberOfClicks = numberOfClicks + 1;
-      const mousePos = {
-        x: event.clientX,
-        y: event.clientY,
-      };
-      if (hasFoundCat(mousePos)) {
-        successfulClick();
-      }
-      else if (numberOfClicks > maxNumberOfClicks) {
-        failedPopup.style.display = 'block';
-        catPeek.style.display = 'block';
-      }
-      else {
-        let distance = calculateDistance(mousePos, catPos);
-        let volumeFactor = (distance**2)/(maxDistance**2);
-        playSound(volumeFactor);
+      if (isGameInProgress) {
+        // Change no of clicks
+        numberOfClicks = numberOfClicks + 1;
+        currClickCount.textContent = numberOfClicks;
+        // Check if user clicked on cat
+        const mousePos = {
+          x: event.clientX,
+          y: event.clientY,
+        };
+        if (hasFoundCat(mousePos)) {
+          successfulClick();
+        }
+        else if (numberOfClicks > maxClicks) {
+          gameOverPopup.style.display = 'block';
+          failureMessage.style.display = 'block';
+          successMessage.style.display = 'none';
+          catPeek.style.display = 'block';
+        }
+        else {
+          let distance = calculateDistance(mousePos, catPos);
+          let volumeFactor = (distance)/(maxDistance);
+          playSound(volumeFactor);
+        }
       }
       break;
     }
   };
 };
 
-startGame();
+window.onresize = (event) => {
+  startGame();
+}
