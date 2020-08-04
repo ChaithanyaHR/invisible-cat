@@ -1,3 +1,3 @@
 Find the Invisible Cat
 
-Demo at https://chaithanya-hr.github.io/invisible-cat/
+Demo at https://chaithanyahr.github.io/invisible-cat/
